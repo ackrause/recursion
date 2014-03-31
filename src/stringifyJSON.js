@@ -3,17 +3,36 @@
 
 // but you don't so you're going to have to write it from scratch:
 var stringifyJSON = function (obj) {
-  var type = typeof(obj);
   var json = '';
 
+  // Determine type of obj
+  var determineType = function(obj) {
+    var type = typeof(obj);
+
+    if (type === 'object') { // requires further inquiry
+      if (obj === null) {
+        type = 'null';
+      } else {
+        type = 'object';
+      }
+    }
+
+    return type;
+  };
+  var type = determineType(obj);
+
   // Stringifying functions by obj type
-  var number = function(val) {
+  var stringifyNumber = function(val) {
     return isNaN(val) ? 'null' : String(val);
+  };
+  var stringifyNull = function() {
+    return 'null';
   };
 
   // This is better than a switch statement??
   var stringify = {
-    'number': number
+    'number': stringifyNumber,
+    'null': stringifyNull
   };
 
   if (typeof(stringify[type]) === 'function') {
