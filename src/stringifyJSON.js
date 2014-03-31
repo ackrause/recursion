@@ -54,7 +54,10 @@ var stringifyJSON = function (obj) {
     var contents = '';
 
     for (var key in obj) {
-      contents += '"' + key + '":' + stringifyJSON(obj[key]) + ',';
+      var value = stringifyJSON(obj[key]);
+      if (value !== undefined) {
+        contents += '"' + key + '":' + value + ',';
+      }
     }
 
     // Hacky way of removing final comma
