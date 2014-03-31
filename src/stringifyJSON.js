@@ -28,11 +28,15 @@ var stringifyJSON = function (obj) {
   var stringifyNull = function() {
     return 'null';
   };
+  var stringifyBoolean = function(val) {
+    return val.toString();
+  };
 
   // This is better than a switch statement??
   var stringify = {
     'number': stringifyNumber,
-    'null': stringifyNull
+    'null': stringifyNull,
+    'boolean': stringifyBoolean
   };
 
   if (typeof(stringify[type]) === 'function') {
