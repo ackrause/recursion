@@ -38,10 +38,14 @@ var stringifyJSON = function (obj) {
     var contents = '';
 
     for (var i = 0; i < arr.length; i++) {
-      contents += stringifyJSON(arr[i]);
-      if (i !== arr.length -1) {
-        contents += ',';
-      }
+      var value = stringifyJSON(arr[i]);
+      contents += (value !== undefined) ? value : 'null';
+      contents += ',';
+    }
+
+    // Hacky way of removing final comma
+    if (contents.length >=1) {
+      contents = contents.slice(0, contents.length-1);
     }
 
     return '[' + contents + ']';
