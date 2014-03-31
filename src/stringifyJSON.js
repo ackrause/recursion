@@ -3,8 +3,6 @@
 
 // but you don't so you're going to have to write it from scratch:
 var stringifyJSON = function (obj) {
-  var json = '';
-
   // Determine type of obj
   var determineType = function(obj) {
     var type = typeof(obj);
@@ -72,11 +70,11 @@ var stringifyJSON = function (obj) {
     'array': stringifyArray,
     'object': stringifyObject
   };
-
+  var json;
   if (typeof(stringify[type]) === 'function') {
     json = stringify[type](obj);
   } else {
-    json = '';
+    json = undefined;
   }
 
   return json;
