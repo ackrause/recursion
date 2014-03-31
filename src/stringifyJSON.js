@@ -12,6 +12,8 @@ var stringifyJSON = function (obj) {
     if (type === 'object') { // requires further inquiry
       if (obj === null) {
         type = 'null';
+      } else if (Array.isArray(obj)) {
+        type = 'array';
       } else {
         type = 'object';
       }
@@ -34,13 +36,26 @@ var stringifyJSON = function (obj) {
   var stringifyString = function(val) {
     return '"' + val + '"';
   };
+  var stringifyArray = function(arr) {
+    var contents = '';
+
+    for (var i = 0; i < arr.length; i++) {
+      contents += stringifyJSON(arr[i]);
+      if (i !== arr.length -1) {
+        contents += ',';
+      }
+    }
+
+    return '[' + contents + ']';
+  };
 
   // This is better than a switch statement??
   var stringify = {
     'number': stringifyNumber,
     'null': stringifyNull,
     'boolean': stringifyBoolean,
-    'string': stringifyString
+    'string': stringifyString,
+    'array': stringifyArray
   };
 
   if (typeof(stringify[type]) === 'function') {
