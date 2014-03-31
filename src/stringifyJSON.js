@@ -48,6 +48,20 @@ var stringifyJSON = function (obj) {
 
     return '[' + contents + ']';
   };
+  var stringifyObject = function(obj) {
+    var contents = '';
+
+    for (var key in obj) {
+      contents += '"' + key + '":' + stringifyJSON(obj[key]) + ',';
+    }
+
+    // Hacky way of removing final comma
+    if (contents.length >= 1) {
+      contents = contents.slice(0, contents.length-1);
+    }
+
+    return '{' + contents + '}';
+  };
 
   // This is better than a switch statement??
   var stringify = {
@@ -55,7 +69,8 @@ var stringifyJSON = function (obj) {
     'null': stringifyNull,
     'boolean': stringifyBoolean,
     'string': stringifyString,
-    'array': stringifyArray
+    'array': stringifyArray,
+    'object': stringifyObject
   };
 
   if (typeof(stringify[type]) === 'function') {
