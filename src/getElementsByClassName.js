@@ -3,7 +3,23 @@
 //   return document.getElementsByClassName(className);
 // };
 
-// But in stead we're going to implement it from scratch:
+// But instead we're going to implement it from scratch:
 var getElementsByClassName = function (className) {
-  // your code here
+  var foundNodes = [];
+
+  var findClassInDOM = function(node) {
+    // Check currnet node
+    if (node.classList && node.classList.contains(className)) {
+      foundNodes.push(node);
+    }
+
+    // Check child nodes
+    for (var i = 0; i < node.childNodes.length; i++) {
+      findClassInDOM(node.childNodes[i]);
+    }
+  };
+
+  findClassInDOM(document.body);
+
+  return foundNodes;
 };
