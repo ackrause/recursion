@@ -101,10 +101,35 @@ var parseJSON = function (json) {
     }
   };
 
+  // function for parsing strings
+  // very basic -- does not handle quotations or other escapable characters
+  var string = function() {
+    var str = '';
+    if (ch === '"') {
+      while(next()) {
+        if (ch === '"') {
+          next();
+          return str;
+        } else {
+          str += ch;
+        }
+      }
+    } else {
+      throw 'Bad string';
+    }
+  };
+
 
   // parses the next value in the json string
   var value = function() {
-    if (ch === '-' || (ch >= '0' && ch <= '9')) {
+    var tokens = {
+      '-': number,
+      '"': string
+    };
+
+    if (typeof tokens[ch] === 'function') {
+      return tokens[ch]();
+    } else if (ch >= '0' && ch <= '9') {
       return number();
     } else {
       return word();
