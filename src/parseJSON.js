@@ -126,12 +126,42 @@ var parseJSON = function (json) {
     }
   };
 
+  // function for parsing arrays
+  var array = function() {
+    var arr = [];
+    if (ch === '[') {
+      next('[');
+      whitespace();
+      //check for empty arrays
+      if (ch === ']') {
+        next();
+        return arr;
+      }
+      // if array's not empty, then parse its contents
+      while (ch) {
+        arr.push(value());
+        whitespace();
+        // check for end of array
+        if (ch === ']') {
+          next();
+          return arr;
+        }
+        // otherwise, array values should be separated by a comma
+        next(',');
+        whitespace();
+      }
+    } else {
+      throw 'Bad array';
+    }
+  };
+
 
   // parses the next value in the json string
   var value = function() {
     var tokens = {
       '-': number,
-      '"': string
+      '"': string,
+      '[': array
     };
 
     whitespace();
