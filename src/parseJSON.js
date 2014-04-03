@@ -25,6 +25,13 @@ var parseJSON = function (json) {
     return ch;
   };
 
+  // function for ignoring whitespace
+  var whitespace = function() {
+    while (ch && ch <= ' ') {
+      next();
+    }
+  };
+
   // function for parsing a numeric value
   var number = function() {
     var numstr = '';
@@ -127,6 +134,7 @@ var parseJSON = function (json) {
       '"': string
     };
 
+    whitespace();
     if (typeof tokens[ch] === 'function') {
       return tokens[ch]();
     } else if (ch >= '0' && ch <= '9') {
@@ -139,6 +147,6 @@ var parseJSON = function (json) {
 
   // parse the input json string
   at = 0;
-  next();
+  ch = ' ';
   return value();
 };
