@@ -155,13 +155,47 @@ var parseJSON = function (json) {
     }
   };
 
+  // function for parsing objects. Here we go...
+  var object = function() {
+    var obj = {};
+    if (ch === '{') {
+      next('{');
+      whitespace();
+      // check for empty object
+      if (ch === '}') {
+        next();
+        return obj;
+      }
+      // if object is not empty, parse its key/value pairs
+      while (ch) {
+        var key = string();
+        whitespace();
+        next(':');
+        whitespace();
+        obj[key] = value();
+        whitespace();
+        // check if object is complete
+        if (ch === '}') {
+          next();
+          return obj;
+        }
+        // if not, key/value pairs are separated by commas
+        next(',');
+        whitespace();
+      }
+    } else {
+      throw 'Invalid object syntax';
+    }
+  };
+
 
   // parses the next value in the json string
   var value = function() {
     var tokens = {
       '-': number,
       '"': string,
-      '[': array
+      '[': array,
+      '{': object
     };
 
     whitespace();
