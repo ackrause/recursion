@@ -61,11 +61,53 @@ var parseJSON = function (json) {
     }
   };
 
+  // function for parsing booleans (true and false) and null
+  var word = function() {
+    var parseTrue = function() {
+      next('t');
+      next('r');
+      next('u');
+      next('e');
+      return true;
+    };
+
+    var parseFalse = function() {
+      next('f');
+      next('a');
+      next('l');
+      next('s');
+      next('e');
+      return false;
+    };
+
+    var parseNull = function() {
+      next('n');
+      next('u');
+      next('l');
+      next('l');
+      return null;
+    };
+
+    var validWords = {
+      't': parseTrue,
+      'f': parseFalse,
+      'n': parseNull
+    };
+
+    if (typeof(validWords[ch] === 'function')) {
+      return validWords[ch]();
+    } else {
+      throw 'Invalid word encountered';
+    }
+  };
+
 
   // parses the next value in the json string
   var value = function() {
     if (ch === '-' || (ch >= '0' && ch <= '9')) {
       return number();
+    } else {
+      return word();
     }
   };
 
